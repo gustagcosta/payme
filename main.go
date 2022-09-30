@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	database.StartDB()
 	godotenv.Load()
+	database.StartDB()
 
 	server := gin.Default()
 

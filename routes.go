@@ -37,6 +37,7 @@ func LoadRoutes(router *gin.Engine) *gin.Engine {
 			charge.PUT("/", controllers.UpdateCharge)
 			charge.DELETE("/:id", controllers.DeleteCharge)
 			charge.GET("/:id", controllers.ShowCharge)
+			charge.GET("/qrcode/:id", controllers.GetQrCode)
 		}
 
 		client := main.Group("clients", middlewares.Auth())

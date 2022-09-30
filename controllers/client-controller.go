@@ -120,7 +120,7 @@ func UpdateClient(c *gin.Context) {
 		return
 	}
 
-	if len(client.Email) <= 0 || len(client.Name) <= 0 {
+	if len(client.Name) <= 0 {
 		c.JSON(400, gin.H{
 			"error": "missing fields",
 		})

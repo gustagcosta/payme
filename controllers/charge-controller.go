@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"payme/database"
 	"payme/models"
+	"payme/services"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -67,9 +68,9 @@ func CreateCharge(c *gin.Context) {
 		return
 	}
 
-	if p.Value < 100 {
+	if p.Value <= 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "value must be bigger than 100",
+			"error": "value can't be 0 or lower",
 		})
 		return
 	}
@@ -141,9 +142,9 @@ func UpdateCharge(c *gin.Context) {
 		return
 	}
 
-	if p.Value < 100 {
+	if p.Value <= 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "value must be bigger than 100",
+			"error": "value can't be 0 or lower",
 		})
 		return
 	}
@@ -159,4 +160,47 @@ func UpdateCharge(c *gin.Context) {
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func GetQrCode(c *gin.Context) {
+	id := c.Param("id")
+
+	idParse, err := strconv.Atoi(id)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "id has to be integer",
+		})
+		return
+	}
+
+	db := database.GetDatabase()
+
+	var charge models.Charge
+
+	result := db.First(&charge, idParse)
+
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "charge not found",
+		})
+		return
+	}
+
+	userId := uint(c.MustGet("UserId").(int))
+
+	var user models.User
+
+	db.First(&user, userId)
+
+	response, err := services.GnGetQrCode(&charge, user.PixKey)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "erro ao gerar qrcode",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
 }
