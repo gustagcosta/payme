@@ -5,10 +5,11 @@
 ### Funcionalidades
   - [x] cadastro de usuários
   - [x] login jwt 
-  - [ ] crud de débitos
-  - [ ] crud de clientes
+  - [x] crud de débitos
+  - [x] crud de clientes
   - [ ] qrcode para pagamento
   - [ ] envio de qrcode via email  
+  - [ ] frontend
 
 ### Extras
   - docker run --name payme -e MYSQL_ROOT_PASSWORD=docker -p 3306:3306 -d mysql
