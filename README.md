@@ -8,7 +8,7 @@
   - [x] crud de débitos
   - [x] crud de clientes
   - [x] qrcode para pagamento
-  - [ ] envio de qrcode via email  ]
+  - [ ] envio de qrcode via email  
   - [ ] frontend 😝😝
 
 ### Refatorações
