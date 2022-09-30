@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"log"
 	"payme/services"
 
 	"github.com/gin-gonic/gin"
@@ -19,5 +20,13 @@ func Auth() gin.HandlerFunc {
 		if !services.NewJWTService().ValidateToken(token) {
 			c.AbortWithStatus(401)
 		}
+
+		id, err := services.NewJWTService().GetIDFromToken(token)
+		if err != nil {
+			log.Println(err.Error())
+			c.AbortWithStatus(401)
+		}
+
+		c.Set("UserId", id)
 	}
 }

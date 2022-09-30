@@ -51,4 +51,6 @@ func GetDatabase() *gorm.DB {
 
 func RunMigrations(db *gorm.DB) {
 	db.AutoMigrate(models.User{})
+	db.AutoMigrate(models.Client{})
+	db.AutoMigrate(models.Charge{})
 }

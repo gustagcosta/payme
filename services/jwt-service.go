@@ -3,7 +3,6 @@ package services
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -16,8 +15,8 @@ type jwtService struct {
 
 func NewJWTService() *jwtService {
 	return &jwtService{
-		secretKey: "secret-key",
-		issure:    "book-api",
+		secretKey: os.Getenv("SECRET_KEY"),
+		issure:    os.Getenv("ISSURE"),
 	}
 }
 
@@ -58,7 +57,7 @@ func (s *jwtService) ValidateToken(token string) bool {
 	return err == nil
 }
 
-func (s *jwtService) GetIDFromToken(t string) (int64, error) {
+func (s *jwtService) GetIDFromToken(t string) (int, error) {
 	token, err := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
 		if _, isvalid := token.Method.(*jwt.SigningMethodHMAC); !isvalid {
 			return nil, fmt.Errorf("invalid Token: %v", t)
@@ -70,13 +69,9 @@ func (s *jwtService) GetIDFromToken(t string) (int64, error) {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		id := claims["sum"].(string)
-		val, err := strconv.ParseInt(id, 10, 64)
-		if err != nil {
-			return 0, err
-		}
+		id := claims["sum"].(float64)
 
-		return val, nil
+		return int(id), nil
 	}
 
 	return 0, err

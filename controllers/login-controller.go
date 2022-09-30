@@ -15,7 +15,7 @@ func HandleLogin(c *gin.Context) {
 	err := c.ShouldBindJSON(&p)
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "cannot bind JSON: " + err.Error(),
+			"error": "fails on parse json: " + err.Error(),
 		})
 		return
 	}
@@ -36,7 +36,7 @@ func HandleLogin(c *gin.Context) {
 		return
 	}
 
-	token, err := services.NewJWTService().GenerateToken(user.Id)
+	token, err := services.NewJWTService().GenerateToken(user.ID)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
