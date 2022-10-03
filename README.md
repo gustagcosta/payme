@@ -9,6 +9,7 @@
   - [x] crud de clientes
   - [x] qrcode para pagamento
   - [ ] envio de qrcode via email  
+  - [ ] frontend 😝😝
 
 ### Refatorações
   - [] validações com gokit
