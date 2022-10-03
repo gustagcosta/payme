@@ -7,9 +7,14 @@
   - [x] login jwt 
   - [x] crud de débitos
   - [x] crud de clientes
-  - [x] qrcode para pagamento
-  - [ ] envio de qrcode via email  
+  - [x] qrcode para pagamento  
   - [ ] frontend 😝😝
+    - [ ] login
+    - [ ] cadastro
+    - [ ] tela de cobranças
+    - [ ] tela de clientes
+    - [ ] tela de qrcode + envio de e-mail
+  - [ ] hook de atualização de cobrança  
 
 ### Refatorações
   - [] validações com gokit
