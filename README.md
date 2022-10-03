@@ -17,9 +17,8 @@
   - [ ] hook de atualização de cobrança  
 
 ### Refatorações
-  - [] validações com gokit
-  - [] logger
-  - [] separação de regra de négocio
+  - [ ] validações com gokit
+  - [ ] logger back + front
 
 ### Extras
   - docker run --name payme -e MYSQL_ROOT_PASSWORD=docker -p 3306:3306 -d mysql
