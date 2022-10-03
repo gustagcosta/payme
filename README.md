@@ -9,8 +9,8 @@
   - [x] crud de clientes
   - [x] qrcode para pagamento  
   - [ ] frontend 😝😝
-    - [ ] login
-    - [ ] cadastro
+    - [x] login
+    - [x] cadastro
     - [ ] tela de cobranças
     - [ ] tela de clientes
     - [ ] tela de qrcode + envio de e-mail
