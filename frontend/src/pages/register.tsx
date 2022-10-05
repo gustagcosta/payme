@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
-import { api } from '../helpers/axios';
 import Layout from '../components/layout';
 
 const Register: NextPage = () => {
@@ -17,7 +16,7 @@ const Register: NextPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/users', {
+      const response = await fetch('http://localhost:8080/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,8 +35,7 @@ const Register: NextPage = () => {
   };
 
   return (
-    <Layout title="Login">
-      <h1 className="mb-3 mt-3">Cadastro</h1>
+    <Layout title="Cadastro">
       <form onSubmit={handleRegister}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">

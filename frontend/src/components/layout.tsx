@@ -15,11 +15,11 @@ export default function Layout({ children, title }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <nav className="navbar navbar-dark text-light bg-dark">
-        <div className="container-fluid justify-content-center">
-          <span className="navbar-brand fs-3 text">Payme</span>
+        <div className="container">
+          <span className="navbar-brand fs-3 text">Payme / {title}</span>
         </div>
       </nav>
-      <main className="container">{children}</main>
+      <main className="container mt-3">{children}</main>
     </>
   );
 }

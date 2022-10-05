@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
-import { NextResponse } from 'next/server';
-import React, { EventHandler, FormEvent, useState } from 'react';
-import { api } from '../helpers/axios';
+import React, { FormEvent, useState } from 'react';
 import Layout from '../components/layout';
 import { useRouter } from 'next/router';
 
@@ -16,7 +14,7 @@ const Login: NextPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:8080/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +36,6 @@ const Login: NextPage = () => {
 
   return (
     <Layout title="Login">
-      <h1 className="mb-3 mt-3">Login</h1>
       <form onSubmit={handleLogin}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
@@ -63,8 +60,8 @@ const Login: NextPage = () => {
           />
         </div>
         {error && (
-          <div className="p-2 mb-3 bg-danger text-white rounded">
-            Senha ou e-mail inválidos.
+          <div className="alert alert-danger" role="alert">
+            Email ou senha inválidos
           </div>
         )}
         <button type="submit" className="btn btn-primary mb-3">

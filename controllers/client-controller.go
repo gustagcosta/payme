@@ -13,7 +13,7 @@ func GetAllClients(c *gin.Context) {
 	db := database.GetDatabase()
 
 	var clients []models.Client
-	db.Find(&clients)
+	db.Where("user_id = ?", c.MustGet("UserId")).Find(&clients)
 
 	c.JSON(http.StatusOK, clients)
 }
@@ -34,7 +34,7 @@ func ShowClient(c *gin.Context) {
 
 	var client models.Client
 
-	result := db.First(&client, idParse)
+	result := db.Where("user_id = ?", c.MustGet("UserId"), "id = ?", idParse).First(&client)
 
 	if result.RowsAffected == 0 {
 		c.JSON(http.StatusOK, gin.H{

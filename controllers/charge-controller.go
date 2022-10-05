@@ -14,7 +14,7 @@ func GetAllCharges(c *gin.Context) {
 	db := database.GetDatabase()
 
 	var charges []models.Charge
-	db.Find(&charges)
+	db.Where("user_id = ?", c.MustGet("UserId")).Find(&charges)
 
 	c.JSON(http.StatusOK, charges)
 }
@@ -35,7 +35,7 @@ func ShowCharge(c *gin.Context) {
 
 	var charge models.Charge
 
-	result := db.First(&charge, idParse)
+	result := db.Where("user_id = ?", c.MustGet("UserId"), "id = ?", idParse).First(&charge)
 
 	if result.RowsAffected == 0 {
 		c.JSON(http.StatusOK, gin.H{
