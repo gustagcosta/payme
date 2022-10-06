@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-  
+
   const { login }: any = useAuth();
   const navigate = useNavigate();
 
@@ -55,8 +55,8 @@ const Login = () => {
           />
         </div>
         {error && (
-          <div className="alert alert-danger" role="alert">
-            Email ou senha inválidos
+          <div className="p-2 mb-3 bg-danger text-white rounded">
+            Erro ao fazer login.
           </div>
         )}
         <button type="submit" className="btn btn-primary mb-3">

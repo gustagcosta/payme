@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../components/Layout';
-import { api } from '../helpers/api';
-import { useAuth } from '../hooks/useAuth';
+
+import Layout from '../../components/Layout';
+import { api } from '../../helpers/api';
+import { useAuth } from '../../hooks/useAuth';
 
 const ClientsIndex = () => {
   const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const ClientsIndex = () => {
   const [clients, setClientes] = useState([] as any[]);
 
   const { token }: any = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     getClients();
@@ -18,11 +19,7 @@ const ClientsIndex = () => {
 
   const getClients = async () => {
     try {
-      const response = await api.get('/clients', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get('/clients');
 
       let clientsFiltered: any[] = [];
 
@@ -46,7 +43,7 @@ const ClientsIndex = () => {
       <div>
         {error && (
           <div className="alert alert-danger" role="alert">
-            Erro ao carregar clientes
+            Erro ao carregar clientes.
           </div>
         )}
         <form>
@@ -77,7 +74,7 @@ const ClientsIndex = () => {
               <a
                 className="btn btn-success"
                 style={{ width: '100px' }}
-                href="#"
+                onClick={() => navigate('/clients/new')}
               >
                 Novo
               </a>
@@ -105,7 +102,11 @@ const ClientsIndex = () => {
           <tbody>
             {clients.length > 0 &&
               clients.map((i: any) => (
-                <tr key={i.id}>
+                <tr
+                  key={i.id}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/clients/${i.id}`)}
+                >
                   <td>{i.name}</td>
                   <td>{i.email}</td>
                 </tr>

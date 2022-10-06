@@ -9,8 +9,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import Home from './routes/Home';
-import ClientsIndex from './routes/Clients';
-import ChargesIndex from './routes/Charges';
+import ClientsIndex from './routes/clients/ClientsIndex';
+import ChargesIndex from './routes/charges/ChargesIndex';
+import NewEditShowClient from './routes/clients/NewEditShowClient';
+import { Action } from './helpers/action.enum';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -30,6 +32,22 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             element={
               <ProtectedRoute>
                 <ClientsIndex />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/clients/new"
+            element={
+              <ProtectedRoute>
+                <NewEditShowClient action={Action.new} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/clients/:id"
+            element={
+              <ProtectedRoute>
+                <NewEditShowClient action={Action.edit} />
               </ProtectedRoute>
             }
           />

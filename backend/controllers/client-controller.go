@@ -102,9 +102,16 @@ func DeleteClient(c *gin.Context) {
 func UpdateClient(c *gin.Context) {
 	db := database.GetDatabase()
 
-	var client models.Client
+	type UpdateClientDTO struct {
+		ID    uint   `json:"id"`
+		Name  string `json:"name"`
+		Email string `gorm:"unique" json:"email"`
+	}
 
-	err := c.ShouldBindJSON(&client)
+	var oldClient models.Client
+	var newClient models.Client
+
+	err := c.ShouldBindJSON(&newClient)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "fails on parse json",
@@ -112,7 +119,7 @@ func UpdateClient(c *gin.Context) {
 		return
 	}
 
-	err = db.First(&client, client.ID).Error
+	err = db.First(&oldClient, newClient.ID).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot find client by id",
@@ -120,16 +127,17 @@ func UpdateClient(c *gin.Context) {
 		return
 	}
 
-	if len(client.Name) <= 0 {
+	if len(newClient.Name) <= 0 {
 		c.JSON(400, gin.H{
 			"error": "missing fields",
 		})
 		return
 	}
 
-	client.UserId = uint(c.MustGet("UserId").(int))
+	oldClient.Email = newClient.Email
+	oldClient.Name = newClient.Name
 
-	err = db.Save(&client).Error
+	err = db.Save(&oldClient).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot update client",

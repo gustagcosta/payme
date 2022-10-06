@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../components/Layout';
-import { api } from '../helpers/api';
-import { useAuth } from '../hooks/useAuth';
-import { formatDate } from '../utils/formatDateTime';
+
+import Layout from '../../components/Layout';
+import { api } from '../../helpers/api';
+import { useAuth } from '../../hooks/useAuth';
+import { formatDate } from '../../utils/formatDateTime';
 
 const ChargesIndex = () => {
   const [error, setError] = useState(false);
@@ -77,7 +78,7 @@ const ChargesIndex = () => {
       <div>
         {error && (
           <div className="alert alert-danger" role="alert">
-            Erro ao carregar cobranças
+            Erro ao carregar cobranças.
           </div>
         )}
         <form>
