@@ -1,24 +1,8 @@
-import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Layout from '../../components/layout';
-import { BsFillEyeFill } from 'react-icons/bs';
+import Layout from '../components/Layout';
 
-const ChargesIndex: NextPage = () => {
+const ChargesIndex = () => {
   const [name, setName] = useState('');
-  const router = useRouter();
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    const token = localStorage.getItem('TOKEN');
-
-    if (!token) {
-      await router.push('/login');
-    }
-  };
 
   return (
     <Layout title="Cobranças">

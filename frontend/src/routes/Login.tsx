@@ -1,31 +1,22 @@
-import type { NextPage } from 'next';
 import React, { FormEvent, useState } from 'react';
-import Layout from '../components/layout';
-import { useRouter } from 'next/router';
+import Layout from '../components/Layout';
+import { api } from '../helpers/api';
+import { useAuth } from '../hooks/useAuth';
 
-const Login: NextPage = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-
-  const router = useRouter();
+  const { login }: any = useAuth();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await api.post('/login', { email, password });
 
       if (response.status === 200) {
-        const data = await response.json();
-        router.push('/home');
-        localStorage.setItem('TOKEN', data.token);
+        login(response.data.token);
       } else {
         throw response;
       }

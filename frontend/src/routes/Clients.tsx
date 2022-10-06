@@ -1,45 +1,23 @@
-import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import Layout from '../../components/layout';
-import { BsFillEyeFill } from 'react-icons/bs';
+import { useState } from 'react';
+import Layout from '../components/Layout';
+import { api } from '../helpers/api';
+import { useAuth } from '../hooks/useAuth';
 
-const ClientsIndex: NextPage = () => {
+const ClientsIndex = () => {
   const [name, setName] = useState('');
   const [error, setError] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    checkAuth();
-    // getClients();
-  }, []);
-
-  const checkAuth = async () => {
-    const token = localStorage.getItem('TOKEN');
-
-    if (!token) {
-      await router.push('/login');
-    }
-  };
+  const { token }: any = useAuth();
 
   const getClients = async () => {
     try {
-      const token = localStorage.getItem('TOKEN');
-
-      const response = await fetch('http://localhost:8080/api/v1/clients', {
-        method: 'GET',
+      const response = await api.get('/clients', {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Origin': 'http://localhost:5173',
         },
       });
 
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        throw response;
-      }
+      console.log(response);
     } catch (error) {
       console.log(error);
       setError(true);

@@ -1,29 +1,27 @@
 {
   "name": "frontend",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "bootstrap": "^5.2.1",
-    "next": "12.3.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "axios": "^1.0.0",
+    "bootstrap": "^5.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1"
   },
   "devDependencies": {
-    "@types/bootstrap": "^5.2.4",
-    "@types/node": "18.7.23",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "eslint": "8.24.0",
-    "eslint-config-next": "12.3.1",
-    "typescript": "4.8.4"
-  },
-  "proxy": "http://localhost:8080/api/v1/"
+    "@types/axios": "^0.14.0",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^2.1.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  }
 }

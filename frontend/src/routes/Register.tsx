@@ -1,37 +1,33 @@
-import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 
-const Register: NextPage = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [pixKey, setPixKey] = useState('');
   const [error, setError] = useState(false);
 
-  const router = useRouter();
-
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('http://localhost:8080/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, pix_key: pixKey, name }),
-      });
+    // try {
+    //   const response = await fetch('http://localhost:8080/api/register', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ email, password, pix_key: pixKey, name }),
+    //   });
 
-      if (response.status === 204) {
-        router.push('/login');
-      } else {
-        throw response;
-      }
-    } catch (error) {
-      setError(true);
-    }
+    //   if (response.status === 204) {
+    //     router.push('/login');
+    //   } else {
+    //     throw response;
+    //   }
+    // } catch (error) {
+    //   setError(true);
+    // }
   };
 
   return (
