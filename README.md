@@ -12,7 +12,7 @@
     - [x] login
     - [x] cadastro
     - [ ] telas de cobranças
-    - [ ] telas de clientes
+    - [x] telas de clientes
     - [ ] tela de qrcode + envio de e-mail
   - [ ] hook de atualização de cobrança  
 
