@@ -6,6 +6,8 @@ import { useAuth } from '../hooks/useAuth';
 const ClientsIndex = () => {
   const [name, setName] = useState('');
   const [error, setError] = useState(false);
+  const [clients, setClientes] = useState([]);
+
   const { token }: any = useAuth();
 
   const getClients = async () => {
@@ -13,11 +15,18 @@ const ClientsIndex = () => {
       const response = await api.get('/clients', {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'http://localhost:5173',
         },
       });
 
-      console.log(response);
+      const clientsFiltered = response.data.filter((i: any) => {
+        let clientName = i.name.toLowerCase();
+
+        if (clientName.includes(name)) {
+          return i;
+        }
+      });
+
+      setClientes(clientsFiltered);
     } catch (error) {
       console.log(error);
       setError(true);
@@ -40,7 +49,7 @@ const ClientsIndex = () => {
                 type="text"
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value.toLowerCase())}
                 className="form-control"
               />
             </div>
@@ -86,18 +95,13 @@ const ClientsIndex = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Gustavo Gonçalves</td>
-              <td>geovani@email.com</td>
-            </tr>
-            <tr>
-              <td>Gustavo Daniel</td>
-              <td>geovani@email.com</td>
-            </tr>
-            <tr>
-              <td>Geovanni Gianechine</td>
-              <td>geovani@email.com</td>
-            </tr>
+            {clients.length > 0 &&
+              clients.map((i: any) => (
+                <tr key={i.id}>
+                  <td>{i.name}</td>
+                  <td>{i.email}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

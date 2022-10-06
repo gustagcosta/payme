@@ -1,39 +1,91 @@
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
+import { api } from '../helpers/api';
+import { useAuth } from '../hooks/useAuth';
+import { formatDate } from '../utils/formatDateTime';
 
 const ChargesIndex = () => {
-  const [name, setName] = useState('');
+  const [error, setError] = useState(false);
+  const [charges, setCharges] = useState([]);
+  const [status, setStatus] = useState('');
+
+  const { token }: any = useAuth();
+
+  useEffect(() => {
+    getCharges();
+  });
+
+  const getCharges = async () => {
+    try {
+      const response = await api.get('/charges', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      let charges = [];
+
+      if (status === 'paid') {
+        charges = response.data.filter((charge: any) => charge.payed == 1);
+      } else if (status === 'unpaid') {
+        charges = response.data.filter(
+          (charge: any) =>
+            charge.payed == 0 && new Date(charge.deadline) < new Date()
+        );
+      } else if (status === 'active') {
+        charges = response.data.filter(
+          (charge: any) =>
+            charge.payed == 0 && new Date(charge.deadline) >= new Date()
+        );
+      } else {
+        charges = response.data;
+      }
+
+      setCharges(charges);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
+  };
+
+  const getRowColor = (charge: any) => {
+    if (charge.payed) {
+      return 'table-success';
+    }
+
+    if (new Date(charge.deadline) > new Date()) {
+      return 'table-primary';
+    } else {
+      return 'table-danger';
+    }
+  };
 
   return (
     <Layout title="Cobranças">
       <div>
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            Erro ao carregar cobranças
+          </div>
+        )}
         <form>
           <div className="mb-3 row">
             <div className="col">
-              <label htmlFor="name">Nome</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="form-control"
-              />
-            </div>
-            <div className="col">
               <label htmlFor="floatingSelect">Status</label>
               <select
-                defaultValue={''}
                 className="form-select"
                 id="floatingSelect"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
               >
-                <option value="" disabled></option>
-                <option value="1" className="text text-success">
+                <option value="">Todas</option>
+                <option value="paid" className="text text-success">
                   Pago
                 </option>
-                <option value="2" className="text text-danger">
+                <option value="unpaid" className="text text-danger">
                   Inadimplente
                 </option>
-                <option value="3" className="text text-primary">
+                <option value="active" className="text text-primary">
                   Ativa
                 </option>
               </select>
@@ -44,7 +96,7 @@ const ChargesIndex = () => {
               <a
                 className="btn btn-primary"
                 style={{ width: '100px' }}
-                href="#"
+                onClick={getCharges}
               >
                 Pesquisar
               </a>
@@ -80,21 +132,14 @@ const ChargesIndex = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="table-success">
-              <td>Gustavo Gonçalves</td>
-              <td>25$</td>
-              <td>25/12/2000</td>
-            </tr>
-            <tr className="table-danger">
-              <td>Gustavo Daniel</td>
-              <td>25$</td>
-              <td>25/12/2000</td>
-            </tr>
-            <tr className="table-primary">
-              <td>Geovanni Gianechine</td>
-              <td>25$</td>
-              <td>25/12/2000</td>
-            </tr>
+            {charges.length > 0 &&
+              charges.map((i: any) => (
+                <tr key={i.id} className={getRowColor(i)}>
+                  <td>{i.client}</td>
+                  <td>{i.value}R$</td>
+                  <td>{formatDate(i.deadline)}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
