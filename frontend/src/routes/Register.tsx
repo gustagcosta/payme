@@ -1,5 +1,8 @@
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Layout from '../components/Layout';
+import { api } from '../helpers/api';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -8,26 +11,28 @@ const Register = () => {
   const [pixKey, setPixKey] = useState('');
   const [error, setError] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    // try {
-    //   const response = await fetch('http://localhost:8080/api/register', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email, password, pix_key: pixKey, name }),
-    //   });
+    try {
+      const response = await api.post('/register', {
+        name,
+        email,
+        password,
+        pik_key: pixKey,
+      });
 
-    //   if (response.status === 204) {
-    //     router.push('/login');
-    //   } else {
-    //     throw response;
-    //   }
-    // } catch (error) {
-    //   setError(true);
-    // }
+      if (response.status === 204) {
+        navigate('/');
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    }
   };
 
   return (
@@ -87,7 +92,11 @@ const Register = () => {
         </button>
       </form>
       <div>
-        <a href="/login" className="link link-primary fs-5">
+        <a
+          onClick={() => navigate('/login')}
+          className="link link-primary fs-5"
+          style={{ cursor: 'pointer' }}
+        >
           Ou faça o seu login
         </a>
       </div>

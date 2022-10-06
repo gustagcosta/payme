@@ -1,4 +1,6 @@
 import React, { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Layout from '../components/Layout';
 import { api } from '../helpers/api';
 import { useAuth } from '../hooks/useAuth';
@@ -7,7 +9,9 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+  
   const { login }: any = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -60,8 +64,12 @@ const Login = () => {
         </button>
       </form>
       <div>
-        <a href="/register" className="link link-primary fs-5">
-          Ou faça o seu cadastro
+        <a
+          onClick={() => navigate('/register')}
+          className="link link-primary fs-5"
+          style={{ cursor: 'pointer' }}
+        >
+          Ou faça seu cadastro
         </a>
       </div>
     </Layout>

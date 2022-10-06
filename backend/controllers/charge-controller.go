@@ -23,7 +23,7 @@ func GetAllCharges(c *gin.Context) {
 		Deadline    time.Time `json:"deadline"`
 	}
 
-	var results []Result
+	var results []Result = []Result{}
 
 	db.Raw(`
 		SELECT pcharges.id, pcharges.value, pcharges.description, pclients.name as client, pcharges.payed, pcharges.deadline 

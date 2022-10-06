@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { api } from '../helpers/api';
 import { useAuth } from '../hooks/useAuth';
@@ -6,14 +7,15 @@ import { formatDate } from '../utils/formatDateTime';
 
 const ChargesIndex = () => {
   const [error, setError] = useState(false);
-  const [charges, setCharges] = useState([]);
+  const [charges, setCharges] = useState([] as any[]);
   const [status, setStatus] = useState('');
 
   const { token }: any = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCharges();
-  });
+  }, []);
 
   const getCharges = async () => {
     try {
@@ -23,23 +25,33 @@ const ChargesIndex = () => {
         },
       });
 
-      let charges = [];
+      let charges: any[] = [];
 
-      if (status === 'paid') {
-        charges = response.data.filter((charge: any) => charge.payed == 1);
-      } else if (status === 'unpaid') {
-        charges = response.data.filter(
-          (charge: any) =>
-            charge.payed == 0 && new Date(charge.deadline) < new Date()
-        );
-      } else if (status === 'active') {
-        charges = response.data.filter(
-          (charge: any) =>
-            charge.payed == 0 && new Date(charge.deadline) >= new Date()
-        );
-      } else {
-        charges = response.data;
-      }
+      response.data.map((charge: any) => {
+        if (status === '') {
+          charges.push(charge);
+        }
+
+        if (status === 'paid' && charge.payed == 1) {
+          charges.push(charge);
+        }
+
+        if (
+          status === 'active' &&
+          charge.payed == 0 &&
+          new Date(charge.deadline) >= new Date()
+        ) {
+          charges.push(charge);
+        }
+
+        if (
+          status === 'unpaid' &&
+          charge.payed == 0 &&
+          new Date(charge.deadline) < new Date()
+        ) {
+          charges.push(charge);
+        }
+      });
 
       setCharges(charges);
     } catch (error) {
@@ -114,7 +126,7 @@ const ChargesIndex = () => {
               <a
                 className="btn btn-secondary"
                 style={{ width: '100px' }}
-                href="/home"
+                onClick={() => navigate('/home')}
               >
                 Voltar
               </a>

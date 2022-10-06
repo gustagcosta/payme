@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { api } from '../helpers/api';
 import { useAuth } from '../hooks/useAuth';
@@ -6,9 +7,14 @@ import { useAuth } from '../hooks/useAuth';
 const ClientsIndex = () => {
   const [name, setName] = useState('');
   const [error, setError] = useState(false);
-  const [clients, setClientes] = useState([]);
+  const [clients, setClientes] = useState([] as any[]);
 
   const { token }: any = useAuth();
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getClients();
+  }, []);
 
   const getClients = async () => {
     try {
@@ -18,11 +24,13 @@ const ClientsIndex = () => {
         },
       });
 
-      const clientsFiltered = response.data.filter((i: any) => {
+      let clientsFiltered: any[] = [];
+
+      response.data.filter((i: any) => {
         let clientName = i.name.toLowerCase();
 
-        if (clientName.includes(name)) {
-          return i;
+        if (clientName.toLowerCase().includes(name)) {
+          clientsFiltered.push(i);
         }
       });
 
@@ -49,7 +57,7 @@ const ClientsIndex = () => {
                 type="text"
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value.toLowerCase())}
+                onChange={(e) => setName(e.target.value)}
                 className="form-control"
               />
             </div>
@@ -78,7 +86,7 @@ const ClientsIndex = () => {
               <a
                 className="btn btn-secondary"
                 style={{ width: '100px' }}
-                href="/home"
+                onClick={() => navigate('/home')}
               >
                 Voltar
               </a>
