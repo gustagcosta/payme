@@ -11,8 +11,8 @@
   - [ ] frontend 😝😝
     - [x] login
     - [x] cadastro
-    - [ ] tela de cobranças
-    - [ ] tela de clientes
+    - [ ] telas de cobranças
+    - [ ] telas de clientes
     - [ ] tela de qrcode + envio de e-mail
   - [ ] hook de atualização de cobrança  
 
