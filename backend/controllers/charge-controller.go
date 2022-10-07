@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"payme/database"
 	"payme/models"
@@ -40,6 +41,7 @@ func ShowCharge(c *gin.Context) {
 	idParse, err := strconv.Atoi(id)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id has to be integer",
 		})
@@ -70,6 +72,7 @@ func CreateCharge(c *gin.Context) {
 	err := c.ShouldBindJSON(&p)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "fails on parse json",
 		})
@@ -95,6 +98,7 @@ func CreateCharge(c *gin.Context) {
 	err = db.Create(&p).Error
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot create charge",
 		})
@@ -109,6 +113,7 @@ func DeleteCharge(c *gin.Context) {
 	idParsed, err := strconv.Atoi(id)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id has to be integer",
 		})
@@ -120,6 +125,7 @@ func DeleteCharge(c *gin.Context) {
 	err = db.Delete(&models.Charge{}, idParsed).Error
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot delete charge",
 		})
@@ -146,6 +152,7 @@ func UpdateCharge(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&newCharge)
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "fails on parse json",
 		})
@@ -154,6 +161,7 @@ func UpdateCharge(c *gin.Context) {
 
 	err = db.First(&oldCharge, newCharge.ID).Error
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot find charge by id",
 		})
@@ -182,6 +190,7 @@ func UpdateCharge(c *gin.Context) {
 
 	err = db.Save(&oldCharge).Error
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot update charge",
 		})
@@ -197,6 +206,7 @@ func GetQrCode(c *gin.Context) {
 	idParse, err := strconv.Atoi(id)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id has to be integer",
 		})
@@ -225,6 +235,7 @@ func GetQrCode(c *gin.Context) {
 	response, err := services.GnGetQrCode(&charge, user.PixKey)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "erro ao gerar qrcode",
 		})

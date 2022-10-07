@@ -18,8 +18,8 @@ func StartDB() {
 	database, err := gorm.Open(mysql.Open(str), &gorm.Config{})
 
 	if err != nil {
+		log.Fatal(err)
 		fmt.Println("Could not connect to the database")
-		log.Fatal("Error: ", err)
 	}
 
 	db = database

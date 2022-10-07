@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"payme/database"
 	"payme/models"
@@ -24,6 +25,7 @@ func ShowClient(c *gin.Context) {
 	idParse, err := strconv.Atoi(id)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id has to be integer",
 		})
@@ -54,6 +56,7 @@ func CreateClient(c *gin.Context) {
 	err := c.ShouldBindJSON(&client)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "fails on parse json",
 		})
@@ -65,6 +68,7 @@ func CreateClient(c *gin.Context) {
 	err = db.Create(&client).Error
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot create client",
 		})
@@ -79,6 +83,7 @@ func DeleteClient(c *gin.Context) {
 	idParsed, err := strconv.Atoi(id)
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "id has to be integer",
 		})
@@ -90,6 +95,7 @@ func DeleteClient(c *gin.Context) {
 	err = db.Delete(&models.Client{}, idParsed).Error
 
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot delete client",
 		})
@@ -113,6 +119,7 @@ func UpdateClient(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&newClient)
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "fails on parse json",
 		})
@@ -121,6 +128,7 @@ func UpdateClient(c *gin.Context) {
 
 	err = db.First(&oldClient, newClient.ID).Error
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot find client by id",
 		})
@@ -139,6 +147,7 @@ func UpdateClient(c *gin.Context) {
 
 	err = db.Save(&oldClient).Error
 	if err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot update client",
 		})

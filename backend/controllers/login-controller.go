@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"payme/database"
 	"payme/models"
 	"payme/services"
@@ -14,6 +15,7 @@ func HandleLogin(c *gin.Context) {
 	var p models.User
 	err := c.ShouldBindJSON(&p)
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{
 			"error": "fails on parse json: " + err.Error(),
 		})
@@ -38,6 +40,7 @@ func HandleLogin(c *gin.Context) {
 
 	token, err := services.NewJWTService().GenerateToken(user.ID)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})

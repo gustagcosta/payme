@@ -21,7 +21,7 @@ const Register = () => {
         name,
         email,
         password,
-        pik_key: pixKey,
+        pix_key: pixKey,
       });
 
       if (response.status === 204) {

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"payme/database"
 	"payme/models"
 	"payme/services"
@@ -15,6 +16,7 @@ func CreateUser(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{
 			"error": "fails on parse json: " + err.Error(),
 		})
@@ -39,8 +41,11 @@ func CreateUser(c *gin.Context) {
 
 	user.Password = services.SHA256Encoder(user.Password)
 
+	log.Println(user)
+
 	err = db.Create(&user).Error
 	if err != nil {
+		log.Println(err)
 		c.JSON(400, gin.H{
 			"error": "cannot create user",
 		})
