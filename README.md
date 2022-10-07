@@ -2,6 +2,13 @@
 
   Aplicativo de gerenciamento de clientes e cobranças, com possibilidade de envio de qrcode para pagamento via pix
 
+### Screenshots
+
+<div style="display: flex; flex-direction: row">
+<img src="./assets/charges.PNG" alt="charge" width="50%" style="padding: 5px"/>
+<img src="./assets/qrcode.PNG" alt="qrcode" width="50%" style="padding: 5px"/>
+</div>
+
 ### Funcionalidades V1
   - [x] cadastro de usuários
   - [x] login jwt 
