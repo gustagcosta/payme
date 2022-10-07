@@ -29,6 +29,7 @@ const Login = () => {
         throw response;
       }
     } catch (error) {
+      console.log(error);
       setError(true);
     }
   };

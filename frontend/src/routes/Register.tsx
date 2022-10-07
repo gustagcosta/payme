@@ -30,7 +30,7 @@ const Register = () => {
         throw response;
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };

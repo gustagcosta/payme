@@ -11,17 +11,23 @@ const Home = () => {
       <div className="d-grid gap-2">
         <a
           onClick={() => navigate('/charges')}
-          className="btn btn-primary btn-block p-2"
+          className="btn btn-dark btn-block p-2"
         >
           Cobranças
         </a>
         <a
           onClick={() => navigate('/clients')}
-          className="btn btn-primary btn-block p-2"
+          className="btn btn-dark btn-block p-2"
         >
           Clientes
         </a>
-        <button className="btn btn-secondary btn-block p-2" onClick={logout}>
+        <a
+          onClick={() => navigate('/charges/qrcode')}
+          className="btn btn-dark btn-block p-2"
+        >
+          Gerar pix
+        </a>
+        <button className="btn btn-dark btn-block p-2" onClick={logout}>
           Sair
         </button>
       </div>

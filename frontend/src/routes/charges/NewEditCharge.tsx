@@ -45,7 +45,7 @@ const NewEditCharge = ({ action }: Props) => {
       setClient(data.client_id)
       setValue(data.value)
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };
@@ -78,7 +78,7 @@ const NewEditCharge = ({ action }: Props) => {
         throw response;
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };
@@ -93,7 +93,7 @@ const NewEditCharge = ({ action }: Props) => {
         throw response;
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };

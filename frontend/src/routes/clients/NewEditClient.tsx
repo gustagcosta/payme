@@ -38,7 +38,7 @@ const NewEditClient = ({ action }: Props) => {
       setEmail(data.email);
       setName(data.name);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };
@@ -68,7 +68,7 @@ const NewEditClient = ({ action }: Props) => {
         throw response;
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };
@@ -83,7 +83,7 @@ const NewEditClient = ({ action }: Props) => {
         throw response;
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setError(true);
     }
   };

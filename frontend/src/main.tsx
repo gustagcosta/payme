@@ -15,6 +15,7 @@ import ClientsIndex from './routes/clients/ClientsIndex';
 import ChargesIndex from './routes/charges/ChargesIndex';
 import NewEditClient from './routes/clients/NewEditClient';
 import NewEditCharge from './routes/charges/NewEditCharge';
+import ChargeQrCode from './routes/charges/QrCode';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -74,6 +75,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             element={
               <ProtectedRoute>
                 <NewEditCharge action={Action.edit} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/charges/qrcode"
+            element={
+              <ProtectedRoute>
+                <ChargeQrCode />
               </ProtectedRoute>
             }
           />

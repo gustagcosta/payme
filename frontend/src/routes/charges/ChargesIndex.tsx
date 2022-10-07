@@ -134,9 +134,10 @@ const ChargesIndex = () => {
         <table className="table table-bordered">
           <thead>
             <tr>
+              <th>#</th>
               <th>Cliente</th>
               <th>Valor</th>
-              <th>Data</th>
+              <th>Prazo</th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +149,7 @@ const ChargesIndex = () => {
                   style={{ cursor: 'pointer' }}
                   onClick={() => navigate(`/charges/${i.id}`)}
                 >
+                  <td>{i.id}</td>
                   <td>{i.client}</td>
                   <td>{i.value}R$</td>
                   <td>{formatDate(i.deadline)}</td>
