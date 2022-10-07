@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../components/Layout';
-import { api } from '../helpers/api';
+import { doRequest } from '../helpers/api';
 import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {
@@ -17,10 +17,14 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/login', { email, password });
+      const response = await doRequest('POST', '/login', false, {
+        email,
+        password,
+      });
+      const data = await response.json();
 
       if (response.status === 200) {
-        login(response.data.token);
+        login(data.token);
       } else {
         throw response;
       }

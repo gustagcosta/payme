@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
-import { api } from '../../helpers/api';
-import { useAuth } from '../../hooks/useAuth';
-import { formatDate } from '../../utils/formatDateTime';
+import { doRequest } from '../../helpers/api';
+import { formatDate } from '../../helpers/formatDateTime';
 
 const ChargesIndex = () => {
   const [error, setError] = useState(false);
   const [charges, setCharges] = useState([] as any[]);
   const [status, setStatus] = useState('');
 
-  const { token }: any = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,15 +18,12 @@ const ChargesIndex = () => {
 
   const getCharges = async () => {
     try {
-      const response = await api.get('/charges', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await doRequest('GET', `/charges`, true);
+      const data = await response.json();
 
       let charges: any[] = [];
 
-      response.data.map((charge: any) => {
+      data.map((charge: any) => {
         if (status === '') {
           charges.push(charge);
         }
@@ -118,7 +113,7 @@ const ChargesIndex = () => {
               <a
                 className="btn btn-success"
                 style={{ width: '100px' }}
-                href="#"
+                onClick={() => navigate('/charges/new')}
               >
                 Novo
               </a>
@@ -147,7 +142,12 @@ const ChargesIndex = () => {
           <tbody>
             {charges.length > 0 &&
               charges.map((i: any) => (
-                <tr key={i.id} className={getRowColor(i)}>
+                <tr
+                  key={i.id}
+                  className={getRowColor(i)}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/charges/${i.id}`)}
+                >
                   <td>{i.client}</td>
                   <td>{i.value}R$</td>
                   <td>{formatDate(i.deadline)}</td>

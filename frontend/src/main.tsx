@@ -2,17 +2,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import { ProtectedRoute } from './components/ProtectRoute';
 import { AuthProvider } from './hooks/useAuth';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Action } from './helpers/action';
 
 import Login from './routes/Login';
 import Register from './routes/Register';
 import Home from './routes/Home';
 import ClientsIndex from './routes/clients/ClientsIndex';
 import ChargesIndex from './routes/charges/ChargesIndex';
-import NewEditShowClient from './routes/clients/NewEditShowClient';
-import { Action } from './helpers/action.enum';
+import NewEditClient from './routes/clients/NewEditClient';
+import NewEditCharge from './routes/charges/NewEditCharge';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -39,7 +41,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             path="/clients/new"
             element={
               <ProtectedRoute>
-                <NewEditShowClient action={Action.new} />
+                <NewEditClient action={Action.new} />
               </ProtectedRoute>
             }
           />
@@ -47,7 +49,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             path="/clients/:id"
             element={
               <ProtectedRoute>
-                <NewEditShowClient action={Action.edit} />
+                <NewEditClient action={Action.edit} />
               </ProtectedRoute>
             }
           />
@@ -56,6 +58,22 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             element={
               <ProtectedRoute>
                 <ChargesIndex />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/charges/new"
+            element={
+              <ProtectedRoute>
+                <NewEditCharge action={Action.new} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/charges/:id"
+            element={
+              <ProtectedRoute>
+                <NewEditCharge action={Action.edit} />
               </ProtectedRoute>
             }
           />

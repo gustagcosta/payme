@@ -2,17 +2,18 @@ import { AxiosResponse } from 'axios';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../components/Layout';
-import { Action } from '../../helpers/action.enum';
-import { api } from '../../helpers/api';
+import { Action } from '../../helpers/action';
+import { doRequest } from '../../helpers/api';
 
 type Props = {
   action: Action;
 };
 
-const NewEditShowClient = ({ action }: Props) => {
+const NewEditClient = ({ action }: Props) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [title, setTitle] = useState('');
 
   const navigate = useNavigate();
@@ -31,10 +32,11 @@ const NewEditShowClient = ({ action }: Props) => {
 
   const prepareEdit = async () => {
     try {
-      const response = await api.get(`/clients/${id}`);
+      const response = await doRequest('GET', `/clients/${id}`, true);
+      const data = await response.json();
 
-      setEmail(response.data.email);
-      setName(response.data.name);
+      setEmail(data.email);
+      setName(data.name);
     } catch (error) {
       console.error(error);
       setError(true);
@@ -45,20 +47,20 @@ const NewEditShowClient = ({ action }: Props) => {
     e.preventDefault();
 
     try {
-      let response: AxiosResponse;
+      let method = 'POST';
+      let url = '/clients';
 
-      if (action === Action.new) {
-        response = await api.post('/clients', {
-          name,
-          email,
-        });
-      } else {
-        response = await api.put('/clients', {
-          id: Number(id),
-          name,
-          email,
-        });
+      const body: any = {
+        name,
+        email,
+      };
+
+      if (action === Action.edit) {
+        method = 'PUT';
+        body.id = Number(id);
       }
+
+      const response = await doRequest(method, url, true, body);
 
       if (response.status === 204 || response.status === 200) {
         navigate('/clients');
@@ -73,7 +75,7 @@ const NewEditShowClient = ({ action }: Props) => {
 
   const handleDelete = async () => {
     try {
-      let response = await api.delete(`/clients/${id}`);
+      const response = await doRequest('DELETE', `/clients/${id}`, true);
 
       if (response.status === 204) {
         navigate('/clients');
@@ -126,8 +128,20 @@ const NewEditShowClient = ({ action }: Props) => {
           </div>
           {action === Action.edit && (
             <div className="p-1">
+              <span
+                onClick={(e) => setConfirmDelete(!confirmDelete)}
+                className={
+                  !confirmDelete ? 'btn btn-danger' : 'btn btn-secondary'
+                }
+              >
+                {!confirmDelete ? 'Deletar' : 'Cancelar'}
+              </span>
+            </div>
+          )}
+          {confirmDelete && (
+            <div className="p-1">
               <span onClick={handleDelete} className="btn btn-danger">
-                Deletar
+                Confirmar
               </span>
             </div>
           )}
@@ -145,4 +159,4 @@ const NewEditShowClient = ({ action }: Props) => {
   );
 };
 
-export default NewEditShowClient;
+export default NewEditClient;

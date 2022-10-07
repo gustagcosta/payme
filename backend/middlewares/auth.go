@@ -23,6 +23,7 @@ func Auth() gin.HandlerFunc {
 
 		id, err := services.NewJWTService().GetIDFromToken(token)
 		if err != nil {
+			log.Println("é aqui ó")
 			log.Println(err.Error())
 			c.AbortWithStatus(401)
 		}

@@ -132,9 +132,19 @@ func DeleteCharge(c *gin.Context) {
 func UpdateCharge(c *gin.Context) {
 	db := database.GetDatabase()
 
-	var p models.Charge
+	type UpdateChargeDTO struct {
+		ID          uint      `json:"id"`
+		Value       uint      `json:"value"`
+		Description string    `json:"description"`
+		ClientId    uint      `json:"client_id"`
+		Payed       bool      `json:"payed"`
+		Deadline    time.Time `json:"deadline"`
+	}
 
-	err := c.ShouldBindJSON(&p)
+	var oldCharge models.Charge
+	var newCharge UpdateChargeDTO
+
+	err := c.ShouldBindJSON(&newCharge)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "fails on parse json",
@@ -142,7 +152,7 @@ func UpdateCharge(c *gin.Context) {
 		return
 	}
 
-	err = db.First(&p, p.ID).Error
+	err = db.First(&oldCharge, newCharge.ID).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot find charge by id",
@@ -150,23 +160,27 @@ func UpdateCharge(c *gin.Context) {
 		return
 	}
 
-	if p.ClientId == 0 {
+	if newCharge.ClientId == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "a charge must have a client",
 		})
 		return
 	}
 
-	if p.Value <= 0 {
+	if newCharge.Value <= 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "value can't be 0 or lower",
 		})
 		return
 	}
 
-	p.UserId = uint(c.MustGet("UserId").(int))
+	oldCharge.Value = newCharge.Value
+	oldCharge.Deadline = newCharge.Deadline
+	oldCharge.Description = newCharge.Description
+	oldCharge.Payed = newCharge.Payed
+	oldCharge.ClientId = newCharge.ClientId
 
-	err = db.Save(&p).Error
+	err = db.Save(&oldCharge).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "cannot update charge",

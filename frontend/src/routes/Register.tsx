@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../components/Layout';
-import { api } from '../helpers/api';
+import { doRequest } from '../helpers/api';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/register', {
+      const response = await doRequest('POST', '/register', false, {
         name,
         email,
         password,

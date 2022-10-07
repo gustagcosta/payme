@@ -109,7 +109,7 @@ func UpdateClient(c *gin.Context) {
 	}
 
 	var oldClient models.Client
-	var newClient models.Client
+	var newClient UpdateClientDTO
 
 	err := c.ShouldBindJSON(&newClient)
 	if err != nil {

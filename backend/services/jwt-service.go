@@ -60,7 +60,7 @@ func (s *jwtService) ValidateToken(token string) bool {
 func (s *jwtService) GetIDFromToken(t string) (int, error) {
 	token, err := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
 		if _, isvalid := token.Method.(*jwt.SigningMethodHMAC); !isvalid {
-			return nil, fmt.Errorf("invalid Token: %v", t)
+			return nil, fmt.Errorf("invalid token: %v", t)
 		}
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})

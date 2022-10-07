@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
-import { api } from '../../helpers/api';
+import { doRequest } from '../../helpers/api';
 import { useAuth } from '../../hooks/useAuth';
 
 const ClientsIndex = () => {
@@ -19,11 +19,12 @@ const ClientsIndex = () => {
 
   const getClients = async () => {
     try {
-      const response = await api.get('/clients');
+      const response = await doRequest('GET', '/clients', true);
+      const data = await response.json();
 
       let clientsFiltered: any[] = [];
 
-      response.data.filter((i: any) => {
+      data.filter((i: any) => {
         let clientName = i.name.toLowerCase();
 
         if (clientName.toLowerCase().includes(name)) {
@@ -95,8 +96,8 @@ const ClientsIndex = () => {
         <table className="table table-bordered">
           <thead>
             <tr>
+              <th>#</th>
               <th>Nome</th>
-              <th>E-mail</th>
             </tr>
           </thead>
           <tbody>
@@ -107,8 +108,8 @@ const ClientsIndex = () => {
                   style={{ cursor: 'pointer' }}
                   onClick={() => navigate(`/clients/${i.id}`)}
                 >
+                  <td>{i.id}</td>
                   <td>{i.name}</td>
-                  <td>{i.email}</td>
                 </tr>
               ))}
           </tbody>
